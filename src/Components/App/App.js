@@ -17,8 +17,19 @@ function App () {
     ];
 
     const [searchResults, setSearchResults] = useState(initialSearchResults);
-    const [playlistName, setPlaylistName] = useState();
-    const [playlistTracks, setPlaylistTracks] = useState();
+    const [playlistName, setPlaylistName] = useState(initialPlaylistName);
+    const [playlistTracks, setPlaylistTracks] = useState(initialPlaylistTracks);
+
+    const addTrack = (track) => {
+      const trackInPlaylist = playlistTracks.some((song) => song.id === track.id);
+
+      if(!trackInPlaylist) {
+        setPlaylistTracks((prevPlaylistTrack)=> [
+          ...prevPlaylistTrack,
+          track
+        ]);
+      }
+    };
   
     return (
         <div>
@@ -29,7 +40,7 @@ function App () {
           <SearchBar />
           
           <div className="App-playlist">
-            <SearchResults userSearchResults={searchResults} />
+            <SearchResults userSearchResults={searchResults} onAdd={addTrack} />
             <Playlist playlistName={playlistName} playlistTracks={playlistTracks} />
           </div>
         </div>
