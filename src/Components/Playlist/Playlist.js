@@ -4,11 +4,11 @@ import TrackList from "../TrackList/TrackList";
 
 
 
-function Playlist({playlistTracks}) {
+function Playlist({playlistTracks, onRemove}) {
   return (
     <div className="Playlist">
       <input defaultValue={"New Playlist"} />
-      <TrackList playlistTracks={playlistTracks} />
+      <TrackList playlistTracks={playlistTracks} onRemove={onRemove} isRemoval={true}/>
       <button className="Playlist-save">
         SAVE TO SPOTIFY
       </button>
