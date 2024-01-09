@@ -2,7 +2,8 @@ import React, {useState} from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import Playlist from "../Playlist/Playlist";
-import './App.css'
+import './App.css';
+import Spotify from "../../util/Spotify/Spotify";
 
 function App () {
 
@@ -44,8 +45,14 @@ function App () {
       const trackURIs = playlistTracks.map(song => song.uri);
     }
 
-    const search = (search) => {
-      console.log(search)
+    const search = (searchTerm) => {
+      Spotify.search(searchTerm)
+        .then((results) => {
+          setSearchResults(results);
+        })
+        .catch((error) => {
+          console.error("Error searching for tracks:", error);
+        });
     }
   
     return (

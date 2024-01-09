@@ -1,7 +1,7 @@
 import React from "react";
 let accessToken;
 const clientId = 'b8497bec2a4143cbb07356770192f103';
-const redirectURI = 'http://localhost:3000/';
+const redirectUri = 'http://localhost:3000/';
 
 const Spotify = {
   getAccessToken() {
@@ -28,7 +28,30 @@ const Spotify = {
       const spotifyAuthorizeUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
       window.location = spotifyAuthorizeUrl;
     }
-  }
+  },
+
+  search(term) {
+    const accessToken = this.getAccessToken();
+    const apiUrl = `https://api.spotify.com/v1/search?type=track&q=${term}`;
+    return fetch(apiUrl, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    }).then(response => response.json())
+    .then(data => {
+        if (!data.tracks){
+            return [];
+        }
+        return data.tracks.items.map(track => ({
+            id: track.id,
+            name: track.name,
+            artist: track.artists[0].name,
+            album: track.album.name,
+            uri: track.uri
+        }));
+     });
+    }
+
 };
 
 export default Spotify;
