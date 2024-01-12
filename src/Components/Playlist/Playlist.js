@@ -1,5 +1,5 @@
 import React from "react";
-import './Playlist.css'
+import styles from './Playlist.module.css';
 import TrackList from "../TrackList/TrackList";
 
 
@@ -11,10 +11,10 @@ function Playlist({playlistTracks, onRemove, onNameChange, onSave}) {
   }
 
   return (
-    <div className="Playlist">
+    <div className={styles.Playlist}>
       <input defaultValue={"New Playlist"} onChange={handleNameChange}/>
-      <TrackList playlistTracks={playlistTracks} onRemove={onRemove} isRemoval={true}/>
-      <button className="Playlist-save" onClick={onSave}>
+      <TrackList userSearchResults={playlistTracks} onRemove={onRemove} isRemoval={true}/>
+      <button className={styles["Playlist-save"]} onClick={onSave}>
         SAVE TO SPOTIFY
       </button>
     </div>

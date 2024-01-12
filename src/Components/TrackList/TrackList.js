@@ -1,5 +1,5 @@
 import React from "react";
-import './TrackList.css';
+import styles from './TrackList.module.css'
 import Track from "../Track/Track";
 
 function TrackList({ userSearchResults, onAdd, isRemoval, onRemove }) {
@@ -10,7 +10,7 @@ function TrackList({ userSearchResults, onAdd, isRemoval, onRemove }) {
   }
 
   return (
-    <div className="TrackList">
+    <div className={styles.TrackList}>
       {/* Use map() to render each Track component */}
       {userSearchResults.map((track) => (
         <Track key={track.id} track={track} onAdd={onAdd} isRemoval={isRemoval} onRemove={onRemove} />

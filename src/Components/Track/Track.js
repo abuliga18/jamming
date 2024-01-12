@@ -1,5 +1,5 @@
 import React from "react";
-import './Track.css';
+import styles from './Track.module.css'
 
 function Track ({isRemoval, track, onAdd, onRemove}) {
 
@@ -18,8 +18,8 @@ function Track ({isRemoval, track, onAdd, onRemove}) {
     }
 
     return (
-      <div className="Track">
-        <div className="Track-information">
+      <div className={styles.Track}>
+        <div className={styles["Track-information"]}>
           <h3>{track.name}</h3>
           <p>{track.artist} | {track.album}</p>
         </div>

@@ -1,10 +1,10 @@
 import React from "react";
-import './SearchResults.css';
+import styles from './SearchResults.module.css';
 import TrackList from "../TrackList/TrackList";
 
 function SearchResults ({userSearchResults, onAdd}) {
     return (
-        <div className="SearchResults">
+        <div className={styles.SearchResults}>
         <TrackList userSearchResults = {userSearchResults} onAdd={onAdd} isRemoval={false}/>
       </div>
         );

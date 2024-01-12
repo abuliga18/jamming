@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from "../SearchResults/SearchResults";
 import Playlist from "../Playlist/Playlist";
-import './App.css';
+import styles from './App.module.css'
 import Spotify from "../../util/Spotify/Spotify";
 
 function App () {
@@ -43,6 +43,14 @@ function App () {
 
     const savePlaylist = () => {
       const trackURIs = playlistTracks.map(song => song.uri);
+      Spotify.savePlaylist(playlistName, trackURIs)
+        .then(() => {
+          setPlaylistName('New Playlist')
+          setPlaylistTracks([])
+        })
+        .catch((error)=> {
+          console.error("Error saving playlist:", error);
+        });
     }
 
     const search = (searchTerm) => {
@@ -58,12 +66,12 @@ function App () {
     return (
         <div>
         <h1>
-          Ja<span className="highlight">mmm</span>ing
+          Ja<span className={styles.highlight}>mmm</span>ing
         </h1>
-        <div className="App">
+        <div className={styles.App}>
           <SearchBar onSearch={search} />
           
-          <div className="App-playlist">
+          <div className={styles["App-playlist"]}>
             <SearchResults userSearchResults={searchResults} onAdd={addTrack} />
             <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onRemove={removeTrack} onNameChange={updatePlaylistName} onSave={savePlaylist}/>
           </div>
