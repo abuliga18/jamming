@@ -1,0 +1,83 @@
+import React, {useState} from "react";
+import SearchBar from "../SearchBar/SearchBar";
+import SearchResults from "../SearchResults/SearchResults";
+import Playlist from "../Playlist/Playlist";
+import styles from './App.module.css'
+import Spotify from "../../util/Spotify/Spotify";
+
+function App () {
+
+    const initialSearchResults = [
+      { id: 1, name: "Track 1", artist: "Artist 1", album: "Album 1" },
+      { id: 2, name: "Track 2", artist: "Artist 2", album: "Album 2" },
+    ];
+
+    const initialPlaylistName = "My Playlist";
+    const initialPlaylistTracks = [
+      { id: 3, name: "Track 3", artist: "Artist 3", album: "Album 3" },
+    ];
+
+    const [searchResults, setSearchResults] = useState(initialSearchResults);
+    const [playlistName, setPlaylistName] = useState(initialPlaylistName);
+    const [playlistTracks, setPlaylistTracks] = useState(initialPlaylistTracks);
+
+    const addTrack = (track) => {
+      const trackInPlaylist = playlistTracks.some((song) => song.id === track.id);
+
+      if(!trackInPlaylist) {
+        setPlaylistTracks((prevPlaylistTrack)=> [
+          ...prevPlaylistTrack,
+          track
+        ]);
+      }
+    };
+
+    const removeTrack = (track) => {
+      const updatedPlaylist = playlistTracks.filter((song) => song.id !== track.id);
+      setPlaylistTracks(updatedPlaylist);
+    }
+
+    const updatePlaylistName = (name) => {
+      setPlaylistName(name)
+    }
+
+    const savePlaylist = () => {
+      const trackURIs = playlistTracks.map(song => song.uri);
+      Spotify.savePlaylist(playlistName, trackURIs)
+        .then(() => {
+          setPlaylistName('New Playlist')
+          setPlaylistTracks([])
+        })
+        .catch((error)=> {
+          console.error("Error saving playlist:", error);
+        });
+    }
+
+    const search = (searchTerm) => {
+      Spotify.search(searchTerm)
+        .then((results) => {
+          setSearchResults(results);
+        })
+        .catch((error) => {
+          console.error("Error searching for tracks:", error);
+        });
+    }
+  
+    return (
+        <div>
+        <h1>
+          Ja<span className={styles.highlight}>mmm</span>ing
+        </h1>
+        <div className={styles.App}>
+          <SearchBar onSearch={search} />
+          
+          <div className={styles["App-playlist"]}>
+            <SearchResults userSearchResults={searchResults} onAdd={addTrack} />
+            <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onRemove={removeTrack} onNameChange={updatePlaylistName} onSave={savePlaylist}/>
+          </div>
+        </div>
+      </div>
+        );
+}
+
+export default App;
